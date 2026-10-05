@@ -51,21 +51,32 @@
   </div>
   <button class="btn" onclick="submitData()">Start Loop</button>
 
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.expand();
 
-    function submitData() {
+  function submitData() {
+    try {
       const clubId = document.getElementById('clubId').value.trim();
       const token = document.getElementById('token').value.trim();
 
       if (!clubId || !token) {
-        tg.showAlert("Dono fields fill karna zaroori hai!");
+        alert("Dono fields fill karna zaroori hai!");
         return;
       }
 
-      tg.sendData(JSON.stringify({ club_id: clubId, token: token }));
+      // Check karein Telegram object available hai ya nahi
+      if (tg && tg.sendData) {
+        const payload = JSON.stringify({ club_id: clubId, token: token });
+        tg.sendData(payload);
+        tg.close(); // Popup apne aap close ho jayega
+      } else {
+        alert("Telegram WebApp context nahi mila! Telegram app ke andar open karein.");
+      }
+    } catch (err) {
+      alert("Error: " + err.message);
     }
-  </script>
+  }
+</script>
 </body>
 </html>
