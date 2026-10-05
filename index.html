@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stan Automation</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--tg-theme-bg-color, #181818);
+      color: var(--tg-theme-text-color, #ffffff);
+      padding: 20px;
+      margin: 0;
+    }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 6px; font-size: 14px; opacity: 0.8; }
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: var(--tg-theme-secondary-bg-color, #242424);
+      color: inherit;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: var(--tg-theme-button-color, #2481cc);
+      color: var(--tg-theme-button-text-color, #ffffff);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Club Controller</h2>
+  <div class="form-group">
+    <label for="clubId">Club ID</label>
+    <input type="text" id="clubId" placeholder="e.g. JEE6H7R4">
+  </div>
+  <div class="form-group">
+    <label for="token">Bearer Token</label>
+    <input type="text" id="token" placeholder="Paste your token here">
+  </div>
+  <button class="btn" onclick="submitData()">Start Loop</button>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    function submitData() {
+      const clubId = document.getElementById('clubId').value.trim();
+      const token = document.getElementById('token').value.trim();
+
+      if (!clubId || !token) {
+        tg.showAlert("Dono fields fill karna zaroori hai!");
+        return;
+      }
+
+      tg.sendData(JSON.stringify({ club_id: clubId, token: token }));
+    }
+  </script>
+</body>
+</html>
